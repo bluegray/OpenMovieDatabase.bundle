@@ -192,6 +192,9 @@ class OmdbApi(Agent.Movies):
 
         rating_imdb = None
         rating_rt = None
+        rating_rt_stars = None
+        rating_rt_user = None
+        rating_rt_user_stars = None
 
         if 'imdbRating' in movie and movie['imdbRating'] != 'N/A':
           rating_imdb = movie['imdbRating']
@@ -199,18 +202,42 @@ class OmdbApi(Agent.Movies):
         if 'tomatoMeter' in movie and movie['tomatoMeter'] != 'N/A':
           rating_rt = movie['tomatoMeter']
 
+        if 'tomatoRating' in movie and movie['tomatoRating'] != 'N/A':
+          rating_rt_stars = movie['tomatoRating']
+
+        if 'tomatoUserMeter' in movie and movie['tomatoUserMeter'] != 'N/A':
+          rating_rt_user = movie['tomatoUserMeter']
+
+        if 'tomatoUserRating' in movie and movie['tomatoUserRating'] != 'N/A':
+          rating_rt_user_stars = movie['tomatoUserRating']
+
         if Prefs['rating'] == 'IMDb' and rating_imdb:
           metadata.rating = float(rating_imdb)
-        elif Prefs['rating'] == 'Rotten Tomatoes' and rating_rt:
+        elif Prefs['rating'] == 'Rotten Tomatoes Tomatometer' and rating_rt:
           metadata.rating = float(int(rating_rt)/10)
+        elif Prefs['rating'] == 'Rotten Tomatoes Audience Score' and rating_rt_user:
+          metadata.rating = float(int(rating_rt_user)/10)
+        elif Prefs['rating'] == 'Rotten Tomatoes Average Rating' and rating_rt_stars:
+          metadata.rating = float(rating_rt_stars)
+        elif Prefs['rating'] == 'Rotten Tomatoes Audience Average Rating' and rating_rt_user_stars:
+          metadata.rating = float(rating_rt_user_stars)*2
 
         if metadata.summary:
           summary = [metadata.summary]
         else:
           summary = []
 
+        if Prefs['add_rating_rt_user_stars'] and rating_rt_user_stars:
+          summary.append('Rotten Tomatoes User Avg: %s/5' % (rating_rt_user_stars))
+
+        if Prefs['add_rating_rt_stars'] and rating_rt_stars:
+          summary.append('Rotten Tomatoes Avg: %s/10' % (rating_rt_stars))
+
+        if Prefs['add_rating_rt_user'] and rating_rt_user:
+          summary.append('Rotten Tomatoes Audience Score: %s%%' % (rating_rt_user))
+
         if Prefs['add_rating_rt'] and rating_rt:
-          summary.append('Rotten Tomatoes: %s%%' % (rating_rt))
+          summary.append('Rotten Tomatoes Tomatometer: %s%%' % (rating_rt))
 
         if Prefs['add_rating_imdb'] and rating_imdb:
           summary.append('IMDb: %s' % (rating_imdb))

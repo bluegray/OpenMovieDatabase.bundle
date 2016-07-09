@@ -93,7 +93,10 @@
     "type": "enum",
     "values": [
       "IMDb",
-      "Rotten Tomatoes"
+      "Rotten Tomatoes Tomatometer",
+      "Rotten Tomatoes Audience Score",
+      "Rotten Tomatoes Average Rating",
+      "Rotten Tomatoes Audience Average Rating"
     ],
     "default": "IMDb"
   },
@@ -105,7 +108,25 @@
   },
   {
     "id": "add_rating_rt",
-    "label": "Add Rotten Tomatoes rating to summary",
+    "label": "Add Rotten Tomatoes Tomatometer to summary",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "id": "add_rating_rt_user",
+    "label": "Add Rotten Tomatoes Audience Score to summary",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "id": "add_rating_rt_stars",
+    "label": "Add Rotten Tomatoes Average Rating to summary",
+    "type": "bool",
+    "default": "false"
+  },
+  {
+    "id": "add_rating_rt_user_stars",
+    "label": "Add Rotten Tomatoes Audience Average Rating to summary",
     "type": "bool",
     "default": "false"
   }
